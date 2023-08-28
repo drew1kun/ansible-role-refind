@@ -22,7 +22,7 @@ Role Variables
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `refind_force_install` | If set to `true` will overwrite the current rEFInd installation | `false` |
-| `refind_custom_icons` | The list of custom icons as map `{ "url":"value", "dest":"value", "checksum":"value" }` | see [`defaults/main.yml`](defaults/main.yml) |
+| `refind_custom_icons` | The list of custom OS icons as map `{ "url":"value", "dest":"value", "checksum":"value" }`. The icons can be stored in any publicly accessible cloud, thus consider the checksum validation for security reasons | see [`defaults/main.yml`](defaults/main.yml) |
 
 Dependencies
 ----
