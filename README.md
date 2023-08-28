@@ -22,6 +22,7 @@ Role Variables
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `refind_force_install` | If set to `true` will overwrite the current rEFInd installation | `false` |
+| `refind_custom_icons` | The list of custom icons as map `{ "url":"value", "dest":"value", "checksum":"value" }` | see [`defaults/main.yml`](defaults/main.yml) |
 
 Dependencies
 ----
