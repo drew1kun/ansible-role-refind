@@ -1,0 +1,65 @@
+---
+# tasks file for ansible-refind
+
+- name: '[refind] Download latest rEFInd prebuilt binary'
+  ansible.builtin.unarchive:
+    src: https://sourceforge.net/projects/refind/files/latest/download/
+    dest: "/tmp"
+    remote_src: yes
+    # retries: 3
+    # delay: 1
+  register: refind_zip
+  until: refind_zip is succeeded
+  tags: refind
+
+- name: '[refind] Check if /usr/local/bin/mountesp binary exists'
+  stat:
+    path: /usr/local/bin/mountesp
+  register: refind_mountesp
+  tags: refind
+
+- name: '[refind] Run refind-install OSX/Linux installation wrapper script'
+  command: "{{ refind_zip.dest | replace('.zip', '') }}/refind-install"
+  become: yes
+  register: refind_install
+  when: not refind_mountesp.stat.exists or refind_force_install
+  tags: refind
+
+- name: '[refind] Check if /Volumes/ESP is mounted'
+  command: mount
+    warn=no  # Ugly, but must use '=' instead of ':'
+  register: refind_mount
+  changed_when: false
+  tags: refind
+
+- name: '[refind] Mount ESP volume under /Volumes/ESP'
+  command: /usr/local/bin/mountesp
+  register: refind_mountesp_result
+  become: yes
+  when:
+  - refind_mountesp.stat.exists
+  - not refind_install.changed
+  - "'/Volumes/ESP' not in refind_mount.stdout"
+  # - ansible_mounts | selectattr('mount','equalto','/Volumes/ESP') | list | count > 0
+  tags: refind
+
+- name: '[refind] Copy custom rEFInd OS icons'
+  ansible.builtin.get_url:
+    url: "{{ icon.url }}"
+    dest: "{{ icon.dest }}"
+    mode: 0644
+    owner: "{{ ansible_user_id }}"
+    group: staff
+    checksum: "{{ icon.checksum }}"
+  register: refind_download_icons
+  until: refind_download_icons is succeeded
+  loop: "{{ refind_custom_icons | flatten(levels=1) }}"
+  loop_control:
+    loop_var: icon
+  tags: refind
+
+- name: '[refind] Copy rEFInd config'
+  copy:
+    src: refind.conf
+    dest: /Volumes/ESP/EFI/refind/
+  tags: refind

@@ -1,0 +1,15 @@
+galaxy_info:
+  role_name: refind
+  author: Andrew Shagayev
+  description: Ansible role that installs rEFInd boot manager for UEFI systems.
+  license: MIT
+  min_ansible_version: 1.9
+  github_branch: main
+  platforms:
+  - name: MacOSX
+    versions: all
+  galaxy_tags:
+  - macos
+  - refind
+  - development
+  - system

@@ -1,0 +1,12 @@
+---
+# defaults file for ansible-refind
+
+refind_force_install: no
+
+refind_custom_icons:
+  - url: https://www.dropbox.com/s/raw/d87ycvu4ay4qho2/os_kali.png
+    dest: /Users/drew/icons/os_kali.png
+    checksum: sha256:debe7ad4b759c6ec5a43c7fb0be914027afe56c2c260157cc393f8995b39ba6b
+  - url: https://www.dropbox.com/s/raw/2jvrj1cio7br5uh/os_mac.png
+    dest: /Users/drew/icons/os_mac.png
+    checksum: sha256:d923ba40569ffcdf6712b434eed36e29e7ac2151a51feb74431a21fc872ad303
